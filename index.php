@@ -7,6 +7,7 @@
 <!-- jQuery and JS bundle w/ Popper.js -->
  <script src="js/jquery.min.js"></script>
   <script src="js/bootstrap.js"></script>
+  
 </head>
 <body class="calculatorbody">
 
@@ -25,46 +26,46 @@ information).</span>
 	  	<div class="col-md-6 calculatorleftside calculatorcommon">
 			    <form>
 				  <div class="form-group">
-				    <label for="ctl00_ContentPlaceHolder1_TextBoxBG">Gross Background (cpm):</label>
-				    <input name="ctl00$ContentPlaceHolder1$TextBoxBG" type="text" value="" id="ctl00_ContentPlaceHolder1_TextBoxBG">
+				    <label for="TextBoxBG">Gross Background (cpm):</label>
+				    <input name="TextBoxBG" type="text" value="" id="TextBoxBG">
 				  </div>
 				  <div class="form-group">
-				    <label for="ctl00_ContentPlaceHolder1_DropDownDet">Detector Type:</label>
-				    <select name="ctl00$ContentPlaceHolder1$DropDownDet" id="ctl00_ContentPlaceHolder1_DropDownDet" >					
+				    <label for="DropDownDet">Detector Type:</label>
+				    <select name="DropDownDet" id="DropDownDet" >					
 
 						</select>
 				  </div>
 				  <div class="form-group">				    
-				    <label class="form-check-label" for="ctl00_ContentPlaceHolder1_DropDownCont">Contaminant:</label>
-				    	<select name="ctl00$ContentPlaceHolder1$DropDownCont" id="ctl00_ContentPlaceHolder1_DropDownCont">
+				    <label class="form-check-label" for="DropDownCont">Contaminant:</label>
+				    	<select name="DropDownCont" id="DropDownCont">
 
 						</select>
 				  </div>
 
 
 				  <div class="form-group">				    
-				    <label class="form-check-label" for="ctl00_ContentPlaceHolder1_DropDownDiam">Source Diameter (cm):</label>
-				    	<select name="ctl00$ContentPlaceHolder1$DropDownDiam"  id="ctl00_ContentPlaceHolder1_DropDownDiam" >
+				    <label class="form-check-label" for="DropDownDiam">Source Diameter (cm):</label>
+				    	<select name="DropDownDiam"  id="DropDownDiam" >
 
 							</select>
 				  </div>
 
 				  <div class="form-group">				    
-				    <label class="form-check-label" for="ctl00_ContentPlaceHolder1_DropDownHeight">Detector Height (cm):</label>
-				    	<select name="ctl00$ContentPlaceHolder1$DropDownHeight" id="ctl00_ContentPlaceHolder1_DropDownHeight" >
+				    <label class="form-check-label" for="DropDownHeight">Detector Height (cm):</label>
+				    	<select name="DropDownHeight" id="DropDownHeight" >
 
 								</select>
 				    	
 				  </div>
 
 				   <div class="form-group">
-				    <label for="ctl00_ContentPlaceHolder1_TextScan">Scanning Speed (m/second):</label>
-				    <input name="ctl00$ContentPlaceHolder1$TextScan" type="text" value="0.5" id="ctl00_ContentPlaceHolder1_TextScan">
+				    <label for="TextScan">Scanning Speed (m/second):</label>
+				    <input name="TextScan" type="text" value="0.5" id="TextScan">
 				  </div>
 
 				  <div class="form-group">				    
-				    <label class="form-check-label" for="ctl00_ContentPlaceHolder1_DropDownFP">False Positive Proportion:</label>
-				    	<select name="ctl00$ContentPlaceHolder1$DropDownFP" id="ctl00_ContentPlaceHolder1_DropDownFP" style="width:100%;">
+				    <label class="form-check-label" for="DropDownFP">False Positive Proportion:</label>
+				    	<select name="DropDownFP" id="DropDownFP" style="width:100%;">
 							<option selected="selected" value="0.05">0.05</option>
 							<option value="0.10">0.10</option>
 							<option value="0.15">0.15</option>
@@ -84,8 +85,8 @@ information).</span>
 
 
 				  <div class="form-group">				    
-				    <label class="form-check-label" for="ctl00_ContentPlaceHolder1_DropDownTP">True Positive Proportion:</label>
-				    	<select name="ctl00$ContentPlaceHolder1$DropDownTP" id="ctl00_ContentPlaceHolder1_DropDownTP" style="width:100%;">
+				    <label class="form-check-label" for="DropDownTP">True Positive Proportion:</label>
+				    	<select name="DropDownTP" id="DropDownTP" style="width:100%;">
 							<option value="0.60">0.60</option>
 							<option value="0.65">0.65</option>
 							<option value="0.70">0.70</option>
@@ -99,10 +100,10 @@ information).</span>
 				    	
 				  </div>
 
-				  <button type="button" class="btn btn-primary">Calculate</button>
+				  <button id="calculatebutton" type="button" class="btn btn-primary">Calculate</button>
 			</form>
 		</div>
-		<div class="col-md-6 calculatorrightside calculatorcommon">Section 2</div>
+		<div class="col-md-6 calculatorrightside calculatorcommon" id="LabelMDCCnts">Section 2</div>
 	  </div>
   </div>
 

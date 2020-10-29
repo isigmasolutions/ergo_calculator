@@ -10,7 +10,7 @@ include 'db.php';
 		  $result -> num_rows;
 		  // Free result set
 		  //echo json_encode($result -> fetch_assoc());
-		  			echo '<option value="--Select Detector--">--Select Detector--</option>';
+		  			echo '<option value="no">--Select Detector--</option>';
 		    while ($row = $result->fetch_assoc()) {
 			        echo "<option value=".$row['ID'].">".$row['Name_']."</option>";
 			    }
@@ -24,7 +24,7 @@ exit;
 		  $result -> num_rows;
 		  // Free result set
 		  //echo json_encode($result -> fetch_assoc());
-		  			echo '<option selected="selected" value="--Select Contaminant--">--Select Contaminant--</option>';
+		  			echo '<option selected="selected" value="no">--Select Contaminant--</option>';
 		    while ($row = $result->fetch_assoc()) {
 			        echo "<option value=".$row['ID'].">".$row['Name_']."</option>";
 			    }
@@ -42,7 +42,7 @@ exit;
 		  $result -> num_rows;
 		  // Free result set
 		  //echo json_encode($result -> fetch_assoc());
-		  			echo '<option selected="selected" value="--Select Source Size--">--Select Source Size--</option>';
+		  			echo '<option selected="selected" value="no">--Select Source Size--</option>';
 		    while ($row = $result->fetch_assoc()) {
 			        echo "<option value=".$row['source_diameter'].">".$row['source_diameter']."</option>";
 			    }
@@ -60,7 +60,7 @@ exit;
 		  $result -> num_rows;
 		  // Free result set
 		  //echo json_encode($result -> fetch_assoc());
-		  			echo '<option selected="selected" value="--Select Source Size--">--Select Source Size--</option>';
+		  			echo '<option selected="selected" value="no">--Select Source Size--</option>';
 		    while ($row = $result->fetch_assoc()) {
 			        echo "<option value=".$row['detector_height'].">".$row['detector_height']."</option>";
 			    }
