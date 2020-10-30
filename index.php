@@ -103,7 +103,18 @@ information).</span>
 				  <button id="calculatebutton" type="button" class="btn btn-primary">Calculate</button>
 			</form>
 		</div>
-		<div class="col-md-6 calculatorrightside calculatorcommon" id="LabelMDCCnts">Section 2</div>
+		<div class="col-md-6 calculatorrightside calculatorcommon">
+		
+		<span class="resultsappend" id="Labeldprime"></span>
+		<!-- <div  id="LabelMDCCnts"></div> -->
+		<span class="resultsappend" id="LabelMDCCnts"></span>
+		<span class="resultsappend" id="LabelVol"></span>
+		<span class="resultsappend" id="LabelDetector"></span>
+		<span class="resultsappend" id="LabelSource"></span>
+		<span class="resultsappend" id="LabelScan"></span>
+		<span class="resultsappend" id="LabelMDC" style="color:#333333;font-size:Small;font-weight:bold;"></span>
+		
+	</div>
 	  </div>
   </div>
 
@@ -112,6 +123,10 @@ information).</span>
 	.calculatorrow{background: #fff;}
 	.calculatorleftside{border: 1px solid;}
 	.calculatorcommon{padding: 2%;}
+	.resultsappend {
+	width: 100%;
+	display: inline-block;
+}
 	.modalgif {
 position:   fixed;
 z-index:    1000;

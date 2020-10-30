@@ -68,5 +68,28 @@ exit;
 exit;
 	}
 
+if($_REQUEST['action'] === 'calculationquery'){
+		$DropDownDet = $_REQUEST['DropDownDet'];
+		$DropDownCont = $_REQUEST['DropDownCont'];
+		$DropDownHeight = $_REQUEST['DropDownHeight'];
+		$diameter_ = $_REQUEST['diameter_'];
+
+		$result = $mysqli -> query("SELECT `mcnp_results`.`offset_x`, `mcnp_results`.`offset_y`, `mcnp_results`.`result_`, `Contaminants`.`gamma_eff` 
+FROM `mcnp_results` 
+LEFT JOIN `Contaminants` ON `mcnp_results`.`ContaminantID` = `Contaminants`.`ID` 
+WHERE (`mcnp_results`.`DetectorID` = $DropDownDet) 
+AND ((`mcnp_results`.`ContaminantID`)=$DropDownCont) 
+AND ((`mcnp_results`.`source_diameter`)=$diameter_) 
+AND ((`mcnp_results`.`detector_height`)=$DropDownHeight)
+AND (`mcnp_results`.`offset_y` = 0) 
+ORDER BY `mcnp_results`.`offset_x`");
+
+		while ($row = $result->fetch_assoc()) {
+			      $array[] = $row;
+			    }
+	echo json_encode($array);		    
+
+exit;
+}
 
 ?>

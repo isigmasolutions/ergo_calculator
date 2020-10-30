@@ -23,6 +23,30 @@ jQuery(document).ready(function(){
         
       }
   }); 
+}
+
+    function getcalculateddate(DropDownDet , DropDownCont , DropDownHeight , diameter_){
+
+    
+  jQuery.ajax({
+      type: "POST",
+      //async: false,
+      beforeSend: function(action) { 
+                jQuery('body').addClass("loading");  
+                jQuery('body').append('<div class="modalgif"></div>');
+              },
+        complete: function() { 
+          jQuery('body').removeClass("loading"); 
+          jQuery('.modalgif').remove();
+        },
+      url: 'getvalues.php',
+      data: {'action':'calculationquery','DropDownDet' : DropDownDet, 'DropDownCont' : DropDownCont , 'DropDownHeight': DropDownHeight ,'diameter_':diameter_},
+      success: function(data){ 
+        //jQuery(appenid).html(data);
+        return data;
+        
+      }
+  });
 
 
   }
@@ -111,62 +135,72 @@ getvaluesonload('GETDetectorType' , '#DropDownDet' , 'NULL' , 'NULL');
             return false;
         }
 
-        var proportions = new DataTable();
-        proportions.Columns.Add(new DataColumn("tp1"));
-        proportions.Columns.Add(new DataColumn("tp2"));
-        proportions.Columns.Add(new DataColumn("tp3"));
-        proportions.Columns.Add(new DataColumn("tp4"));
-        proportions.Columns.Add(new DataColumn("tp5"));
-        proportions.Columns.Add(new DataColumn("tp6"));
-        proportions.Columns.Add(new DataColumn("tp7"));
-        proportions.Columns.Add(new DataColumn("tp8"));
+        var proportions = [];//new DataTable();
+        // proportions.Columns.Add(new DataColumn("tp1"));
+        // proportions.Columns.Add(new DataColumn("tp2"));
+        // proportions.Columns.Add(new DataColumn("tp3"));
+        // proportions.Columns.Add(new DataColumn("tp4"));
+        // proportions.Columns.Add(new DataColumn("tp5"));
+        // proportions.Columns.Add(new DataColumn("tp6"));
+        // proportions.Columns.Add(new DataColumn("tp7"));
+        // proportions.Columns.Add(new DataColumn("tp8"));
 
-        /*proportions.Rows.Add(new object[] { 1.9d, 2.02d, 2.16d, 2.32d, 2.48d, 2.68d, 2.92d, 3.28d });
-        proportions.Rows.Add(new object[] { 1.54d, 1.66d, 1.8d, 1.96d, 2.12d, 2.32d, 2.56d, 2.92d });
-        proportions.Rows.Add(new object[] { 1.3d, 1.52d, 1.56d, 1.72d, 1.88d, 2.08d, 2.32d, 2.68d });
-        proportions.Rows.Add(new object[] { 1.1d, 1.22d, 1.36d, 1.52d, 1.68d, 1.88d, 2.12d, 2.48d });
-        proportions.Rows.Add(new object[] { 0.93d, 1.06d, 1.2d, 1.35d, 1.52d, 1.72d, 1.96d, 2.32d });
-        proportions.Rows.Add(new object[] { 0.78d, 0.91d, 1.05d, 1.2d, 1.36d, 1.56d, 1.8d, 2.16d });
-        proportions.Rows.Add(new object[] { 0.64d, 0.77d, 0.91d, 1.06d, 1.22d, 1.42d, 1.66d, 2.02d });
-        proportions.Rows.Add(new object[] { 0.51d, 0.64d, 0.78d, 0.93d, 1.1d, 1.3d, 1.54d, 1.9d });
-        proportions.Rows.Add(new object[] { 0.38d, 0.52d, 0.66d, 0.8d, 0.97d, 1.17d, 1.41d, 1.77d });
-        proportions.Rows.Add(new object[] { 0.26d, 0.38d, 0.52d, 0.68d, 0.84d, 1.04d, 1.28d, 1.64d });
-        proportions.Rows.Add(new object[] { 0.12d, 0.26d, 0.4d, 0.54d, 0.71d, 0.91d, 1.15d, 1.51d });
-        proportions.Rows.Add(new object[] { 0.0d, 0.13d, 0.27d, 0.42d, 0.58d, 0.82d, 1.02d, 1.38d });
+        proportions.push([ 1.9, 2.02, 2.16, 2.32, 2.48, 2.68, 2.92, 3.28 ]);
+        proportions.push([ 1.54, 1.66, 1.8, 1.96, 2.12, 2.32, 2.56, 2.92 ]);
+        proportions.push([ 1.3, 1.52, 1.56, 1.72, 1.88, 2.08, 2.32, 2.68 ]);
+        proportions.push([ 1.1, 1.22, 1.36, 1.52, 1.68, 1.88, 2.12, 2.48 ]);
+        proportions.push([ 0.93, 1.06, 1.2, 1.35, 1.52, 1.72, 1.96, 2.32 ]);
+        proportions.push([ 0.78, 0.91, 1.05, 1.2, 1.36, 1.56, 1.8, 2.16]);
+        proportions.push([ 0.64, 0.77, 0.91, 1.06, 1.22, 1.42, 1.66, 2.02 ]);
+        proportions.push([ 0.51, 0.64, 0.78, 0.93, 1.1, 1.3, 1.54, 1.9]);
+        proportions.push([ 0.38, 0.52, 0.66, 0.8, 0.97, 1.17, 1.41, 1.77 ]);
+        proportions.push([ 0.26, 0.38, 0.52, 0.68, 0.84, 1.04, 1.28, 1.64 ]);
+        proportions.push([ 0.12, 0.26, 0.4, 0.54, 0.71, 0.91, 1.15, 1.51 ]);
+        proportions.push([ 0.0, 0.13, 0.27, 0.42, 0.58, 0.82, 1.02, 1.38 ]);
 
-        int FP = DropDownFP.SelectedIndex;
-        int TP = DropDownTP.SelectedIndex;
-        float BKG = Convert.ToInt32(TextBoxBG.Text);
-        float dprime = proportions.Rows(FP).Item(TP);
-        int oi = 1;
-        float min_counts = (float)(1.645d * Math.Sqrt(BKG * 60f));
-        float min_counts_mdc = (float)(dprime * Math.Sqrt(BKG * 60f));
-        float MDC = 0f;
-        int speed = Math.Round(Convert.ToSingle(TextScan.Text) * 100f, 0);
-        if (speed < 10 | speed > 150)
+        //parseFloat(
+
+        var FP = jQuery('#DropDownFP').prop('selectedIndex');        
+        var TP = jQuery('#DropDownTP').prop('selectedIndex');
+      
+        //alert(proportions[FP][TP]);
+        var BKG = parseInt(jQuery('#TextBoxBG').val());
+        var dprime = proportions[FP][TP];
+        var oi = 1;
+        var min_counts = parseFloat((1.645 * Math.sqrt(BKG * 60)));
+        var min_counts_mdc = parseFloat( (dprime * Math.sqrt(BKG * 60)));
+        var MDC = 0;
+        var speed = Math.round(jQuery('#TextScan').val() * 100, 0);
+      //alert(speed);
+        if (speed < 10 || speed > 150)
         {
-            LabelMDC.Text = "The speed must be between 0.1 - 1.5 m/s";
+            jQuery('#LabelMDC').text("The speed must be between 0.1 - 1.5 m/s");
             return;
         }
         else if (speed % 10 != 0)
         {
-            LabelMDC.Text = "The speed must be in multiples of 0.1";
+            jQuery('#LabelMDC').text("The speed must be in multiples of 0.1");
             return;
         }
 
-        string diameter_ = DropDownDiam.SelectedValue.ToString();
-        if (DropDownDiam.SelectedValue == "Infinite")
+        var diameter_ = jQuery('#DropDownDiam').val();
+
+        if (diameter_ == "Infinite")
         {
             diameter_ = "1400";
         }
 
-        float volume = (float)(Math.Pow(Convert.ToInt32(diameter_) / 2d, 2d) * Math.PI * 15d);
+        var  volume = (Math.pow(parseInt(diameter_) / 2, 2) * Math.PI * 15);
+        //alert(volume);
 
-        Labeldprime.Text = "Index of Sensitivity (d'): " + dprime.ToString();
-        LabelMDCCnts.Text = "MDCR Above BKG (" + TextBoxBG.Text + "): " + min_counts_mdc.ToString("N0");
-        string qry_ = "SELECT mcnp_results.offset_x, mcnp_results.offset_y, mcnp_results.result_, Contaminants.gamma_eff " + "FROM mcnp_results LEFT JOIN Contaminants ON mcnp_results.ContaminantID = Contaminants.ID " + ("WHERE (((mcnp_results.DetectorID)=" + DropDownDet.SelectedValue + ") AND ((mcnp_results.ContaminantID)=" + DropDownCont.SelectedValue + ") AND ((mcnp_results.source_diameter)=" + diameter_ + ") AND ((mcnp_results.detector_height)=" + DropDownHeight.SelectedValue + ")) AND (mcnp_results.offset_y = 0) ORDER BY mcnp_results.offset_x");
-
-STEP 19 STARTS HERE
+        jQuery('#Labeldprime').html("Index of Sensitivity (d'): " + dprime);
+        jQuery('#LabelMDCCnts').html("MDCR Above BKG (" + jQuery('#TextBoxBG').val() + "): " + Math.round(min_counts_mdc));
+        //var qry_ = "SELECT mcnp_results.offset_x, mcnp_results.offset_y, mcnp_results.result_, Contaminants.gamma_eff FROM mcnp_results LEFT JOIN Contaminants ON mcnp_results.ContaminantID = Contaminants.ID WHERE ((mcnp_results.DetectorID)=" + jQuery('#DropDownDet').val() + ") AND ((mcnp_results.ContaminantID)=" + jQuery('#DropDownCont').val() + ") AND ((mcnp_results.source_diameter)=" +  diameter_ + ") AND ((mcnp_results.detector_height)=" + jQuery('#DropDownHeight'.val() + ")) AND (mcnp_results.offset_y = 0) ORDER BY mcnp_results.offset_x";
+        
+       //var  dt_ = getcalculateddate(jQuery('#DropDownDet').val() , jQuery('#DropDownCont').val() , jQuery('#DropDownHeight').val() , diameter_);
+      // alert(dt_);
+/*
+///STEP 19 STARTS HERE
 
         DataTable dt_ = GetData(qry_).Tables[0]; //GetData is a generic function to populate a datatable from a query of the database.
         dt_.Columns.Add(new DataColumn("mdc", typeof(double)));
