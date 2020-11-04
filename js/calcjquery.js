@@ -43,7 +43,7 @@ jQuery(document).ready(function(){
       data: {'action':'calculationquery','DropDownDet' : DropDownDet, 'DropDownCont' : DropDownCont , 'DropDownHeight': DropDownHeight ,'diameter_':diameter_},
       success: function(data){ 
         //jQuery(appenid).html(data);
-        return data;
+         callbackvalue(data);
         
       }
   });
@@ -190,49 +190,79 @@ getvaluesonload('GETDetectorType' , '#DropDownDet' , 'NULL' , 'NULL');
             diameter_ = "1400";
         }
 
-        var  volume = (Math.pow(parseInt(diameter_) / 2, 2) * Math.PI * 15);
-        //alert(volume);
+        var  volume = (Math.pow(parseInt(diameter_) / 2, 2) * Math.PI * 15).toFixed(2);
+      
 
         jQuery('#Labeldprime').html("Index of Sensitivity (d'): " + dprime);
         jQuery('#LabelMDCCnts').html("MDCR Above BKG (" + jQuery('#TextBoxBG').val() + "): " + Math.round(min_counts_mdc));
         //var qry_ = "SELECT mcnp_results.offset_x, mcnp_results.offset_y, mcnp_results.result_, Contaminants.gamma_eff FROM mcnp_results LEFT JOIN Contaminants ON mcnp_results.ContaminantID = Contaminants.ID WHERE ((mcnp_results.DetectorID)=" + jQuery('#DropDownDet').val() + ") AND ((mcnp_results.ContaminantID)=" + jQuery('#DropDownCont').val() + ") AND ((mcnp_results.source_diameter)=" +  diameter_ + ") AND ((mcnp_results.detector_height)=" + jQuery('#DropDownHeight'.val() + ")) AND (mcnp_results.offset_y = 0) ORDER BY mcnp_results.offset_x";
         
-       //var  dt_ = getcalculateddate(jQuery('#DropDownDet').val() , jQuery('#DropDownCont').val() , jQuery('#DropDownHeight').val() , diameter_);
-      // alert(dt_);
-/*
+      // var  dt_ = getcalculateddate(jQuery('#DropDownDet').val() , jQuery('#DropDownCont').val() , jQuery('#DropDownHeight').val() , diameter_);
+       var dt_ = '';
+        
+            var dt_ = null;
+            var DropDownDet =  jQuery('#DropDownDet').val();
+            var DropDownCont = jQuery('#DropDownCont').val();
+            var DropDownHeight = jQuery('#DropDownHeight').val();
+            //var diameter_1 = 
+             jQuery.ajax({
+                  'async': false,
+                  type: "POST",
+                  'global': false,
+                  //async: false,
+                  beforeSend: function(action) { 
+                            jQuery('body').addClass("loading");  
+                            jQuery('body').append('<div class="modalgif"></div>');
+                          },
+                    complete: function() { 
+                      jQuery('body').removeClass("loading"); 
+                      jQuery('.modalgif').remove();
+                    },
+                  url: 'getvalues.php',
+                  data: {'action':'calculationquery','DropDownDet' : DropDownDet, 'DropDownCont' : DropDownCont , 'DropDownHeight': DropDownHeight ,'diameter_':diameter_},
+                  success: function(data){ 
+                    //jQuery(appenid).html(data);
+                      dt_ = data;
+                    
+                  }
+              })
+       
+
+       // alert('yes=>'+ tmp);
+
 ///STEP 19 STARTS HERE
 
-        DataTable dt_ = GetData(qry_).Tables[0]; //GetData is a generic function to populate a datatable from a query of the database.
-        dt_.Columns.Add(new DataColumn("mdc", typeof(double)));
-
-        int i = (int)(speed * oi / 10d);
-        if (diameter_ != "1400" && i >= dt_.Rows.Count)
+        //DataTable dt_ = GetData(qry_).Tables[0]; //GetData is a generic function to populate a datatable from a query of the database.
+        //dt_.Columns.Add(new DataColumn("mdc", typeof(double)));
+//alert(dt_.length);
+        var i = (speed * oi / 10);
+        if (diameter_ != "1400" && i >= dt_.length)
         {
-            LabelMDC.Text = "There is insufficient data to calculate the MDC concentration. Reduce the observation interval or scanning speed and try again.";
-            return;
+            jQuery('#LabelMDC').html("There is insufficient data to calculate the MDC concentration. Reduce the observation interval or scanning speed and try again.");
+            return false;
         }
-
-        var vals_ = new float[i + 1];
-        float mdc_ = 0f;
+//alert(i);
+        var vals_ =  i + 1;
+        var  mdc_ = 0;
         if (diameter_ == "1400")
         {
-            if (dt_.Rows.Count == 1)
+            if (dt_.length == 1)
             {
-                dt_.Rows[0]["mdc"] = CalculateMDC(min_counts_mdc, dt_.Rows[0]["result_"], volume, dt_.Rows[0]["gamma_eff"], 1.6d);
-                mdc_ = Convert.ToSingle(dt_.Rows[0]["mdc"]);
+                dt_[0]["mdc"] = CalculateMDC(min_counts_mdc, dt_[0]["result_"], volume, dt_[0]["gamma_eff"], 1.6);
+                mdc_ = dt_[0]["mdc"];
             }
         }
         else
         {
-            int z = 0;
-            for (int j = 1; j < dt_.Rows.Count; j++)
+            var z = 0;
+            for (var j = 1; j < dt_.length; j++)
             {
-                double y1 = dt_.Rows[j – 1]["result_"];
-                double y2 = dt_.Rows[j]["result_"];
-                double x1 = dt_.Rows[j – 1]["offset_x"];
-                double x2 = dt_.Rows[j]["offset_x"];
-                double m = (y2 - y1) / (x2 - x1);
-                vals_[z] = (float)((m * x2 / 2d - m * x2 + y2) * x2 - (m * x1 / 2d - m * x2 + y2) * x1);
+                var  y1 = dt_[j - 1]["result_"];
+                var  y2 = dt_[j]["result_"];
+                var  x1 = dt_[j - 1]["offset_x"];
+                var  x2 = dt_[j]["offset_x"];
+                var  m = (y2 - y1) / (x2 - x1);
+                vals_[z] = ((m * x2 / 2 - m * x2 + y2) * x2 - (m * x1 / 2 - m * x2 + y2) * x1);
                 z += 1;
                 if (z > i)
                 {
@@ -240,53 +270,61 @@ getvaluesonload('GETDetectorType' , '#DropDownDet' , 'NULL' , 'NULL');
                 }
             }
 
-            var observations_ = new List<double>();
-            for (int p = i - 1; p >= 0; p -= 1)
-                observations_.Add(vals_[p]);
-            for (int p = 0; p <= i - 1; p++)
-                observations_.Add(vals_[p]);
+            //var observations_ = new List<double>();
+            var observations_ = [];
+            for (var p = i - 1; p >= 0; p -= 1)
+               // observations_.Add(vals_[p]);
+                observations_.push(vals_[p]);
+            for (var p = 0; p <= i - 1; p++)
+                observations_.push(vals_[p]);
 
-            double tot = 0d;
-            float sum = 0f;
-            int v = 0;
-            for (int k = 0; k <= 0; k++) 
+            var  tot = 0;
+            var  sum = 0;
+            var v = 0;
+            for (var k = 0; k <= 0; k++) 
             {
-                sum = 0f;
-                for (int j = v; j <= v + i - 1; j++)
-                    sum = (float)(sum + observations_[j]);
+                sum = 0;
+                for (var j = v; j <= v + i - 1; j++)
+                    sum = (sum + observations_[j]);
                 v += 1;
-                dt_.Rows[k]["mdc"] = CalculateMDC(min_counts_mdc, sum / speed, volume, dt_.Rows[0]["gamma_eff"], 1.6d);
-                tot += dt_.Rows[k]["mdc"];
+                dt_[k]["mdc"] = CalculateMDC(min_counts_mdc, sum / speed, volume, dt_[0]["gamma_eff"], 1.6);
+                tot += dt_[k]["mdc"];
             }
 
-            mdc_ = (float)(tot / v);
+            mdc_ = (tot / v);
         }
 
-        int height_ = Convert.ToInt32(DropDownHeight.SelectedValue.ToString);
+         height_ = jQuery('#DropDownHeight').val();
         if (diameter_ == "1400")
         {
-            LabelVol.Text = "Source Volume: Infinite Plane";
-            LabelSource.Text = "Source: Infinite Plane";
+            jQuery('#LabelVol').html("Source Volume: Infinite Plane");
+            jQuery('#LabelSource').html("Source: Infinite Plane");
         }
         else
         {
-            LabelVol.Text = "Source Volume: " + volume.ToString() + "  cm&#179";
-            LabelSource.Text = "Source: " + DropDownCont.SelectedItem.ToString() + " " + DropDownDiam.SelectedItem.ToString() + " cm diameter x 15 cm depth";
+            jQuery('#LabelVol').html("Source Volume: " + volume + "  cm&#179");
+            jQuery('#LabelSource').html("Source: " + jQuery('#DropDownCont option:selected').text() + " " + jQuery('#DropDownDiam').val() + " cm diameter x 15 cm depth");
         }
 
-        if (mdc_ == 0f)
+        if (mdc_ == 0)
         {
-            LabelMDC.Text = "The value could not be calculated";
+            jQuery('#LabelMDC').html("Contaminant Scan MDC: The value could not be calculated");
         }
         else
         {
-            LabelMDC.Text = "Contaminant Scan MDC: " + Math.Round(mdc_, 1).ToString() + " pCi/g (" + Math.Round(mdc_ * 37f, 1).ToString() + " Bq/kg)";
+            jQuery('#LabelMDC').html("Contaminant Scan MDC: " + Math.round(mdc_, 1) + " pCi/g (" + Math.round(mdc_ * 37, 1) + " Bq/kg)");
         }
+        
+        var mycacl = (height_ / 2.54).toFixed(1);
+        jQuery('#LabelDetector').html("Detector: " + jQuery('#DropDownDet option:selected').text() + " at " + height_ + " cm (" + mycacl + " in.) above soil");
+        jQuery('#LabelScan').html("Scanning Parameters: " + (speed / 100) + " m/s (" + (speed * 0.0328084).toFixed(1) + " ft/s), 1 s counting interval");
 
-        LabelDetector.Text = "Detector: " + DropDownDet.SelectedItem.ToString() + " at " + height_.ToString() + " cm (" + Math.Round(height_ / 2.54d, 1).ToString() + " in.) above soil";
-        LabelScan.Text = "Scanning Parameters: " + (speed / 100d).ToString() + " m/s (" + Math.Round(speed * 0.0328084d, 1).ToString() + " ft/s), 1 s counting interval";
 
-*/
+
+ function CalculateMDC( counts_, eff_, sourcevol, gamma_eff, density)
+        {
+            return counts_ / (2.22 * eff_ * gamma_eff * density * sourcevol);
+        }
 
  });
 
